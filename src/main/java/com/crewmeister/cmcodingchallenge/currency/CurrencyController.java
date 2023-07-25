@@ -10,12 +10,14 @@ import java.util.List;
 @RequestMapping("/api")
 public class CurrencyController {
 
+    private final CurrencyRepository currencyRepository;
+
+    CurrencyController(CurrencyRepository currencyRepository) {
+        this.currencyRepository = currencyRepository;
+    }
+
     @GetMapping("/currencies")
     public List<Currency> getCurrencies() {
-        return List.of(
-                new Currency("EUR"),
-                new Currency("USD"),
-                new Currency("CHF")
-        );
+        return currencyRepository.findAll();
     }
 }

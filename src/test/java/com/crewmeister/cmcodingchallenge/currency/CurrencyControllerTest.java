@@ -1,23 +1,37 @@
 package com.crewmeister.cmcodingchallenge.currency;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class CurrencyControllerTest {
 
-    @BeforeAll
-    public static void setup() {
+    private CurrencyRepository currencyRepository;
+
+    @BeforeEach
+    public void setup() {
+        currencyRepository = mock(CurrencyRepository.class);
+
         RestAssuredMockMvc.basePath = "/api";
-        RestAssuredMockMvc.standaloneSetup(new CurrencyController());
+        RestAssuredMockMvc.standaloneSetup(new CurrencyController(currencyRepository));
     }
 
     @Test
     void shouldReturnCollectionOfCurrencies() {
+        when(currencyRepository.findAll()).thenReturn(List.of(
+            new Currency("EUR"),
+            new Currency("USD"),
+            new Currency("CHF")
+        ));
+
         given()
             .when()
                 .get("/currencies")
