@@ -21,9 +21,24 @@ The exchange rates can be received from [2]. This is a public service provided b
 As we are using user story format to specify our requirements, here are the user stories to implement:
 
 - As a client, I want to get a list of all available currencies
+  ```http request
+  GET /currencies
+  ```
 - As a client, I want to get all EUR-FX exchange rates at all available dates as a collection
+  ```http request
+  GET /rates
+  ```
 - As a client, I want to get the EUR-FX exchange rate at particular day
+  ```http request
+  GET /rates?date=20230724
+  ```
+  ```http request
+  GET /rates/USD?date=20230724
+  ```
 - As a client, I want to get a foreign exchange amount for a given currency converted to EUR on a particular day
+  ```http request
+  GET /rates/USD?amount=123.45
+  ```
 
 If you think that your service would require storage, please use H2 for simplicity, even if this would not be your choice if 
 you would implement an endpoint for real clients. 
