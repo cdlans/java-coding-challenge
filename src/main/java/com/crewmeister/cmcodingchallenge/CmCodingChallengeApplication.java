@@ -29,9 +29,11 @@ public class CmCodingChallengeApplication {
 
             LOG.info("Retrieved {} currencies", currencyStrings.size());
 
-            for (String id : currencyStrings) {
-                repository.save(new Currency(id));
-            }
+            List<Currency> currencies = currencyStrings.stream()
+                    .map(Currency::new)
+                    .toList();
+
+            repository.saveAll(currencies);
 
             LOG.info("Saved currencies to database");
         };
