@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.WebApplicationContext;
 
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItem;
@@ -36,7 +37,7 @@ class CurrencyRepositoryTest {
     }
 
     @Test
-    void shouldReturnCollectionOfCurrencies() {
+    void getCurrenciesShouldReturnCollectionOfCurrencies() {
         currencyRepository.save(new Currency("EUR"));
         currencyRepository.save(new Currency("USD"));
         currencyRepository.save(new Currency("CHF"));
@@ -52,7 +53,7 @@ class CurrencyRepositoryTest {
     }
 
     @Test
-    void shouldReturnCurrencyById() {
+    void getCurrenciesShouldReturnCurrencyById() {
         currencyRepository.save(new Currency("USD"));
 
         when()
@@ -63,10 +64,24 @@ class CurrencyRepositoryTest {
     }
 
     @Test
-    void shouldReturn404WhenNotFound() {
+    void getCurrenciesShouldReturn404WhenNotFound() {
         when()
             .get("/currencies/XYZ")
         .then()
             .status(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void postCurrenciesShouldNotBeAllowed() {
+        String json = """
+                    { "id": "NEW" }
+                """;
+
+        given()
+            .body(json)
+        .when()
+            .post("/currencies")
+        .then()
+            .status(HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
