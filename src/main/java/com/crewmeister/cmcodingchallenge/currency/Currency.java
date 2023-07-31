@@ -8,6 +8,7 @@ public class Currency {
 
     @Id
     String id;
+    String code;
 
     protected Currency() {
         // JPA needs no-arg constructor
@@ -15,14 +16,19 @@ public class Currency {
 
     public Currency(String id) {
         this.id = id;
+        this.code = id;
     }
 
     public String getId() {
         return id;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     @Override
     public String toString() {
-        return String.format("Currency[id='%s']", id);
+        return String.format("Currency[id='%s', code='%s']", id, code);
     }
 }
