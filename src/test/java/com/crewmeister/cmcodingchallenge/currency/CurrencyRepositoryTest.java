@@ -1,6 +1,7 @@
 package com.crewmeister.cmcodingchallenge.currency;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
+@Transactional
 class CurrencyRepositoryTest {
 
     @MockBean
