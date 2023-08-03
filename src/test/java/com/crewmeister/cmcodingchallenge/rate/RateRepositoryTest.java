@@ -41,7 +41,7 @@ class RateRepositoryTest {
     }
 
     @Test
-    void getCurrenciesShouldReturnCollectionOfCurrencies() {
+    void getRatesShouldReturnCollectionOfRates() {
         rateRepository.save(new Rate("EUR", "2023-01-01", new BigDecimal("1.234")));
         rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
         rateRepository.save(new Rate("CHF", "2023-01-01", new BigDecimal("42.42")));
@@ -54,6 +54,18 @@ class RateRepositoryTest {
             .body("_embedded.rates", hasItem(hasEntry("exchangeRate", 1.234f)))
             .body("_embedded.rates", hasItem(hasEntry("exchangeRate", 9.876f)))
             .body("_embedded.rates", hasItem(hasEntry("exchangeRate", 42.42f)));
+    }
+
+    @Test
+    void getRateByIdShouldReturnRate() {
+        Rate rate = rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+
+        when()
+                .get("/rates/" + rate.id)
+                .then()
+                .status(HttpStatus.OK)
+                .body("date", is("2023-01-01"))
+                .body("exchangeRate", is(9.876f));
     }
 
     @Test

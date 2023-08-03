@@ -55,7 +55,7 @@ class CurrencyRepositoryTest {
     }
 
     @Test
-    void getCurrenciesShouldReturnCurrencyById() {
+    void getCurrencyByIdShouldReturnCurrency() {
         currencyRepository.save(new Currency("USD"));
 
         when()
