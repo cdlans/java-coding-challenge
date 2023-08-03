@@ -85,7 +85,7 @@ public class BundesbankService {
     }
 
     private void extractRates(DocumentContext jsonContext, List<Currency> currencies, List<LocalDate> dates) {
-        log.info("Extracting and storing rates");
+        log.info("Extracting and storing...");
         int rateCount = 0;
 
         for (int i = 0; i < currencies.size(); i++) {
@@ -106,7 +106,7 @@ public class BundesbankService {
                 }
             }
             rateRepository.saveAll(rates);
-            log.info("Extracted and stored {} rates", rateCount);
+            log.info("Extracted and stored {} rates for {}", rateCount, currency);
         }
 
         log.info("Finished extracting and storing rates");

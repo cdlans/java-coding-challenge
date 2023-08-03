@@ -31,8 +31,7 @@ public class BundesbankClient {
         log.info("Fetching data from Bundesbank...");
 
         String json = client.get()
-//                .uri("/BBEX3/D..EUR.BB.AC.000")
-                .uri("/BBEX3/D..EUR.BB.AC.000?lastNObservations=100")
+                .uri("/BBEX3/D..EUR.BB.AC.000")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
