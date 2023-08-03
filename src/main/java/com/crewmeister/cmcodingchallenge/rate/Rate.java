@@ -12,14 +12,14 @@ import java.time.LocalDate;
 public class Rate {
     @Id
     @GeneratedValue
-    public Long id;
+    private Long id;
 
-    public String currency;
+    private String currency;
 
-    public LocalDate date;
+    private LocalDate date;
 
     @Column(precision = 20, scale = 10)
-    public BigDecimal exchangeRate;
+    private BigDecimal exchangeRate;
 
     protected Rate() {
         // JPA needs no-arg constructor
@@ -35,6 +35,22 @@ public class Rate {
         this.currency = currency;
         this.date = LocalDate.parse(date);
         this.exchangeRate = exchangeRate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public BigDecimal getExchangeRate() {
+        return exchangeRate;
     }
 
     @Override

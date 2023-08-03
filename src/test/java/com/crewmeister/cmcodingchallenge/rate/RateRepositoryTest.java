@@ -61,7 +61,7 @@ class RateRepositoryTest {
         Rate rate = rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
 
         when()
-                .get("/rates/" + rate.id)
+                .get("/rates/" + rate.getId())
                 .then()
                 .status(HttpStatus.OK)
                 .body("date", is("2023-01-01"))
