@@ -1,5 +1,7 @@
 package com.crewmeister.cmcodingchallenge.rate;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -9,7 +11,7 @@ import java.util.Optional;
 
 public interface RateRepository extends Repository<Rate, Long> {
 
-    List<Rate> findAll();
+    Page<Rate> findAll(Pageable page);
 
     Optional<Rate> findById(Long id);
 

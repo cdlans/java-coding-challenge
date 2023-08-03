@@ -106,7 +106,7 @@ public class BundesbankService {
                 }
             }
             rateRepository.saveAll(rates);
-            log.info("Extracted and stored {} rates for {}", rateCount, currency);
+            log.info("Extracted and stored {} rates", rateCount);
         }
 
         log.info("Finished extracting and storing rates");

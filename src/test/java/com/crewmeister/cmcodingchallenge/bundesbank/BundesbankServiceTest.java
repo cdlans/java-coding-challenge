@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
@@ -40,12 +41,12 @@ class BundesbankServiceTest {
 
         bundesbankService.initializeRates();
 
-        List<Currency> currencies = currencyRepository.findAll();
+        List<Currency> currencies = currencyRepository.findAll(Pageable.unpaged()).getContent();
         assertEquals(42, currencies.size());
         assertEquals("AUD", currencies.get(0).getId());
         assertEquals("ZAR", currencies.get(41).getId());
 
-        List<Rate> rates = rateRepository.findAll();
+        List<Rate> rates = rateRepository.findAll(Pageable.unpaged()).getContent();
         assertEquals(251, rates.size());
 
         Rate rate = rateRepository.findByCurrencyAndDate("AUD", LocalDate.parse("2023-07-17")).orElseThrow();
