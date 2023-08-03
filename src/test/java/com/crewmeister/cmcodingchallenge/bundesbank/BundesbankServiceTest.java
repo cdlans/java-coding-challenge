@@ -3,7 +3,6 @@ package com.crewmeister.cmcodingchallenge.bundesbank;
 import com.crewmeister.cmcodingchallenge.currency.Currency;
 import com.crewmeister.cmcodingchallenge.currency.CurrencyRepository;
 import com.crewmeister.cmcodingchallenge.rate.Rate;
-import com.crewmeister.cmcodingchallenge.rate.RateId;
 import com.crewmeister.cmcodingchallenge.rate.RateRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,13 +48,13 @@ class BundesbankServiceTest {
         List<Rate> rates = rateRepository.findAll();
         assertEquals(251, rates.size());
 
-        Rate rate = rateRepository.findById(new RateId("AUD", "2023-07-17")).orElseThrow();
+        Rate rate = rateRepository.findByCurrencyAndDate("AUD", LocalDate.parse("2023-07-17")).orElseThrow();
         assertEquals(0, new BigDecimal("1.6487").compareTo(rate.exchangeRate));
 
-        rate = rateRepository.findById(new RateId("LVL", "2013-12-24")).orElseThrow();
+        rate = rateRepository.findByCurrencyAndDate("LVL", LocalDate.parse("2013-12-24")).orElseThrow();
         assertEquals(0, new BigDecimal("0.702200").compareTo(rate.exchangeRate));
 
-        rate = rateRepository.findById(new RateId("ZAR", "2023-07-24")).orElseThrow();
+        rate = rateRepository.findByCurrencyAndDate("ZAR", LocalDate.parse("2023-07-24")).orElseThrow();
         assertEquals(0, new BigDecimal("19.7927").compareTo(rate.exchangeRate));
     }
 }
