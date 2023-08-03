@@ -24,6 +24,11 @@ public class Rate {
         this.exchangeRate = exchangeRate;
     }
 
+    public Rate(String currency, String date, BigDecimal exchangeRate) {
+        this.id = new RateId(currency, date);
+        this.exchangeRate = exchangeRate;
+    }
+
     @Override
     public String toString() {
         return String.format("Rate[currency='%s', date='%s', rate=%s]", id.currency, id.date, exchangeRate);
