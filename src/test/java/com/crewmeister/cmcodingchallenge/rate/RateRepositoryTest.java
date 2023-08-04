@@ -61,11 +61,47 @@ class RateRepositoryTest {
         Rate rate = rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
 
         when()
-                .get("/rates/" + rate.getId())
-                .then()
-                .status(HttpStatus.OK)
-                .body("date", is("2023-01-01"))
-                .body("exchangeRate", is(9.876f));
+            .get("/rates/" + rate.getId())
+        .then()
+            .status(HttpStatus.OK)
+            .body("date", is("2023-01-01"))
+            .body("exchangeRate", is(9.876f));
+    }
+
+    @Test
+    void getRatesByCurrencyShouldReturnRate() {
+        rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+
+        when()
+            .get("/rates/search/findByCurrency?currency=USD")
+        .then()
+            .status(HttpStatus.OK)
+            .body("_embedded.rates[0].date", is("2023-01-01"))
+            .body("_embedded.rates[0].exchangeRate", is(9.876f));
+    }
+
+    @Test
+    void getRatesByDateShouldReturnRate() {
+        rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+
+        when()
+            .get("/rates/search/findByDate?date=2023-01-01")
+        .then()
+            .status(HttpStatus.OK)
+            .body("_embedded.rates[0].date", is("2023-01-01"))
+            .body("_embedded.rates[0].exchangeRate", is(9.876f));
+    }
+
+    @Test
+    void getRateByCurrencyAndDateShouldReturnRate() {
+        rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+
+        when()
+            .get("/rates/search/findByCurrencyAndDate?currency=USD&date=2023-01-01")
+        .then()
+            .status(HttpStatus.OK)
+            .body("date", is("2023-01-01"))
+            .body("exchangeRate", is(9.876f));
     }
 
     @Test
