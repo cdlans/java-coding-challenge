@@ -105,6 +105,17 @@ class RateRepositoryTest {
     }
 
     @Test
+    void getConversionShouldReturnCorrectConversion() {
+        rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.10")));
+
+        when()
+            .get("/rates/search/conversion?currency=USD&date=2023-08-06&foreignAmount=110")
+        .then()
+            .status(HttpStatus.OK)
+            .body("euroAmount", is(100f));
+    }
+
+    @Test
     void postRatesShouldNotBeAllowed() {
         String json = """
                     { "currency": "EUR", "date": "2023-08-03", "exchangeRate": 1.234 }

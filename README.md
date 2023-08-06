@@ -21,24 +21,19 @@ The exchange rates can be received from [2]. This is a public service provided b
 As we are using user story format to specify our requirements, here are the user stories to implement:
 
 - As a client, I want to get a list of all available currencies
-  ```http request
-  GET /currencies
-  ```
+  - To get all available currencies, use the following URL:  
+    [`http://localhost:8080/api/v1/currencies`](http://localhost:8080/api/v1/currencies)
 - As a client, I want to get all EUR-FX exchange rates at all available dates as a collection
-  ```http request
-  GET /rates
-  ```
+    - To get all exchange rates at all available dates as a collection, use the following URL:  
+      [`http://localhost:8080/api/v1/rates`](http://localhost:8080/api/v1/rates)
 - As a client, I want to get the EUR-FX exchange rate at particular day
-  ```http request
-  GET /rates?date=20230724
-  ```
-  ```http request
-  GET /rates/USD?date=20230724
-  ```
+  - To get all exchange rates on 2023-08-04, use the following URL:  
+    [`http://localhost:8080/api/v1/rates/search/findByDate?date=2023-08-04`](http://localhost:8080/api/v1/rates/search/findByDate?date=2023-08-04)
+  - To get the exchange rate on 2023-08-04 for the USD, use the following URL:  
+    [`http://localhost:8080/api/v1/rates/search/findByCurrencyAndDate?currency=USD&date=2023-08-04`](http://localhost:8080/api/v1/rates/search/findByCurrencyAndDate?currency=USD&date=2023-08-04)
 - As a client, I want to get a foreign exchange amount for a given currency converted to EUR on a particular day
-  ```http request
-  GET /rates/USD?amount=123.45
-  ```
+  - To convert USD 200 to EUR on 2023-08-04, use the following URL:  
+    [`http://localhost:8080/api/v1/rates/search/conversion?currency=USD&date=2023-08-04&foreignAmount=200`](http://localhost:8080/api/v1/rates/search/conversion?currency=USD&date=2023-08-04&foreignAmount=200)
 
 If you think that your service would require storage, please use H2 for simplicity, even if this would not be your choice if 
 you would implement an endpoint for real clients. 
