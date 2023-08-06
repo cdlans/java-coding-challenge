@@ -14,8 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,13 +49,13 @@ class BundesbankServiceTest {
         List<Rate> rates = rateRepository.findAll(Pageable.unpaged()).getContent();
         assertEquals(251, rates.size());
 
-//        Rate rate = rateRepository.findByCurrencyAndDate("AUD", LocalDate.parse("2023-07-17")).orElseThrow();
-//        assertEquals(0, new BigDecimal("1.6487").compareTo(rate.getExchangeRate()));
-//
-//        rate = rateRepository.findByCurrencyAndDate("LVL", LocalDate.parse("2013-12-24")).orElseThrow();
-//        assertEquals(0, new BigDecimal("0.702200").compareTo(rate.getExchangeRate()));
-//
-//        rate = rateRepository.findByCurrencyAndDate("ZAR", LocalDate.parse("2023-07-24")).orElseThrow();
-//        assertEquals(0, new BigDecimal("19.7927").compareTo(rate.getExchangeRate()));
+        Rate rate = rateRepository.findByCurrencyAndDate("AUD", LocalDate.parse("2023-07-17")).orElseThrow();
+        assertEquals(0, new BigDecimal("1.6487").compareTo(rate.getExchangeRate()));
+
+        rate = rateRepository.findByCurrencyAndDate("LVL", LocalDate.parse("2013-12-24")).orElseThrow();
+        assertEquals(0, new BigDecimal("0.702200").compareTo(rate.getExchangeRate()));
+
+        rate = rateRepository.findByCurrencyAndDate("ZAR", LocalDate.parse("2023-07-24")).orElseThrow();
+        assertEquals(0, new BigDecimal("19.7927").compareTo(rate.getExchangeRate()));
     }
 }

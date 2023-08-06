@@ -1,22 +1,14 @@
 package com.crewmeister.cmcodingchallenge.currency;
 
-import com.crewmeister.cmcodingchallenge.rate.Rate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Currency {
 
     @Id
-    private String id;
-    private String code;
-
-    @OneToMany(mappedBy = "currency")
-    private final Set<Rate> rates = new HashSet<>();
+    String id;
+    String code;
 
     protected Currency() {
         // JPA needs no-arg constructor
