@@ -1,9 +1,11 @@
 package com.crewmeister.cmcodingchallenge.rate;
 
+import com.crewmeister.cmcodingchallenge.currency.Currency;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,7 +16,8 @@ public class Rate {
     @GeneratedValue
     private Long id;
 
-    private String currency;
+    @ManyToOne
+    private Currency currency;
 
     private LocalDate date;
 
@@ -26,13 +29,13 @@ public class Rate {
     }
 
     public Rate(String currency, LocalDate date, BigDecimal exchangeRate) {
-        this.currency = currency;
+        this.currency = new Currency(currency);
         this.date = date;
         this.exchangeRate = exchangeRate;
     }
 
     public Rate(String currency, String date, BigDecimal exchangeRate) {
-        this.currency = currency;
+        this.currency = new Currency(currency);
         this.date = LocalDate.parse(date);
         this.exchangeRate = exchangeRate;
     }
@@ -42,7 +45,7 @@ public class Rate {
     }
 
     public String getCurrency() {
-        return currency;
+        return currency.getCode();
     }
 
     public LocalDate getDate() {

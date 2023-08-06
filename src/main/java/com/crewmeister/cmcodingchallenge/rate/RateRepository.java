@@ -15,11 +15,11 @@ public interface RateRepository extends Repository<Rate, Long> {
 
     Optional<Rate> findById(Long id);
 
-    Page<Rate> findByCurrency(String currency, Pageable pageable);
+//    Page<Rate> findByCurrency(String currency, Pageable pageable);
 
     Page<Rate> findByDate(LocalDate date, Pageable pageable);
 
-    Optional<Rate> findByCurrencyAndDate(String currency, LocalDate date);
+//    Optional<Rate> findByCurrencyAndDate(String currency, LocalDate date);
 
     @RestResource(exported = false)
     Rate save(Rate rate);
