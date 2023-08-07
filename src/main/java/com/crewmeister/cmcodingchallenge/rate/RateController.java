@@ -61,8 +61,8 @@ public class RateController {
     }
 
     @GetMapping(value = "/{id}/conversion")
-    public EntityModel<Conversion> convert(@PathVariable Long id,
-                                           @RequestParam(defaultValue = "1") BigDecimal foreignAmount) {
+    public EntityModel<Conversion> conversion(@PathVariable Long id,
+                                              @RequestParam(defaultValue = "1") BigDecimal foreignAmount) {
         Rate rate = rateRepository.findById(id).orElseThrow(() -> {
             String message = String.format("Could not find rate '%s'", id);
             return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
@@ -76,7 +76,7 @@ public class RateController {
         }
 
         return EntityModel.of(conversion,
-                linkTo(methodOn(RateController.class).convert(rate.getId(), foreignAmount)).withSelfRel(),
+                linkTo(methodOn(RateController.class).conversion(rate.getId(), foreignAmount)).withSelfRel(),
                 linkTo(methodOn(RateController.class).findOne(rate.getId())).withRel("rate"));
     }
 }

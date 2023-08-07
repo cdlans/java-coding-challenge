@@ -19,7 +19,7 @@ public class RateModelAssembler implements RepresentationModelAssembler<Rate, En
         return EntityModel.of(rate,
                 linkTo(methodOn(RateController.class).findOne(rate.getId())).withSelfRel(),
                 linkTo(methodOn(RateController.class).findAll(null, null, Pageable.unpaged())).withRel("rates"),
-                linkTo(methodOn(RateController.class).convert(rate.getId(), null)).withRel("conversion"),
+                linkTo(methodOn(RateController.class).conversion(rate.getId(), null)).withRel("conversion"),
                 linkTo(methodOn(CurrencyController.class).findOne(rate.getCurrency())).withRel("currency"));
     }
 }
