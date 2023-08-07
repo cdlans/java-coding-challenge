@@ -30,14 +30,14 @@ public class CurrencyController {
     }
 
     @GetMapping
-    PagedModel<EntityModel<Currency>> findAll(Pageable pageable) {
+    public PagedModel<EntityModel<Currency>> findAll(Pageable pageable) {
         Page<Currency> page = currencyRepository.findAll(pageable);
 
         return pagedResourcesAssembler.toModel(page, currencyModelAssembler);
     }
 
     @GetMapping(value = "/{id}")
-    EntityModel<Currency> findOne(@PathVariable String id) {
+    public EntityModel<Currency> findOne(@PathVariable String id) {
         Currency currency = currencyRepository.findById(id).orElseThrow(() -> {
                     String message = String.format("Could not find currency '%s'", id);
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, message);

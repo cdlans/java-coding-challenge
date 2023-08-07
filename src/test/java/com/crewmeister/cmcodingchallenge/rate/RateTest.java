@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +21,7 @@ import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
 @Transactional
-class RateRepositoryTest {
+class RateTest {
 
     @MockBean
     CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
@@ -30,13 +29,10 @@ class RateRepositoryTest {
     @Autowired
     RateRepository rateRepository;
 
-    @Value("${spring.data.rest.basePath}")
-    String basePath;
-
     @BeforeEach
     void setup(WebApplicationContext context) {
         RestAssuredMockMvc.webAppContextSetup(context);
-        RestAssuredMockMvc.basePath = basePath;
+        RestAssuredMockMvc.basePath = "/api/v2";
         RestAssuredMockMvc.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
@@ -50,10 +46,10 @@ class RateRepositoryTest {
             .get("/rates")
         .then()
             .status(HttpStatus.OK)
-            .body("_embedded.rates.size()", is(3))
-            .body("_embedded.rates", hasItem(hasEntry("exchangeRate", 1.234f)))
-            .body("_embedded.rates", hasItem(hasEntry("exchangeRate", 9.876f)))
-            .body("_embedded.rates", hasItem(hasEntry("exchangeRate", 42.42f)));
+            .body("_embedded.rateList.size()", is(3))
+            .body("_embedded.rateList", hasItem(hasEntry("exchangeRate", 1.234f)))
+            .body("_embedded.rateList", hasItem(hasEntry("exchangeRate", 9.876f)))
+            .body("_embedded.rateList", hasItem(hasEntry("exchangeRate", 42.42f)));
     }
 
     @Test
@@ -61,7 +57,7 @@ class RateRepositoryTest {
         Rate rate = rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
 
         when()
-            .get("/rates/" + rate.getId())
+            .get("/rates/{id}", rate.getId())
         .then()
             .status(HttpStatus.OK)
             .body("date", is("2023-01-01"))
@@ -70,49 +66,67 @@ class RateRepositoryTest {
 
     @Test
     void getRatesByCurrencyShouldReturnRate() {
+        rateRepository.save(new Rate("CHF", "2023-01-01", new BigDecimal("1.234")));
         rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
 
         when()
-            .get("/rates/search/findByCurrency?currency=USD")
+            .get("/rates?currency=USD")
         .then()
             .status(HttpStatus.OK)
-            .body("_embedded.rates[0].date", is("2023-01-01"))
-            .body("_embedded.rates[0].exchangeRate", is(9.876f));
+            .body("_embedded.rateList.size()", is(1))
+            .body("_embedded.rateList[0].date", is("2023-01-01"))
+            .body("_embedded.rateList[0].exchangeRate", is(9.876f));
     }
 
     @Test
     void getRatesByDateShouldReturnRate() {
         rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+        rateRepository.save(new Rate("USD", "2023-01-02", new BigDecimal("8.765")));
 
         when()
-            .get("/rates/search/findByDate?date=2023-01-01")
+            .get("/rates?date=2023-01-02")
         .then()
             .status(HttpStatus.OK)
-            .body("_embedded.rates[0].date", is("2023-01-01"))
-            .body("_embedded.rates[0].exchangeRate", is(9.876f));
+            .body("_embedded.rateList.size()", is(1))
+            .body("_embedded.rateList[0].date", is("2023-01-02"))
+            .body("_embedded.rateList[0].exchangeRate", is(8.765f));
     }
 
     @Test
     void getRateByCurrencyAndDateShouldReturnRate() {
-        rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+        rateRepository.save(new Rate("CHF", "2023-01-01", new BigDecimal("9.876")));
+        rateRepository.save(new Rate("AUD", "2023-01-02", new BigDecimal("8.765")));
+        rateRepository.save(new Rate("USD", "2023-01-03", new BigDecimal("7.654")));
 
         when()
-            .get("/rates/search/findByCurrencyAndDate?currency=USD&date=2023-01-01")
+            .get("/rates?currency=USD&date=2023-01-03")
         .then()
             .status(HttpStatus.OK)
-            .body("date", is("2023-01-01"))
-            .body("exchangeRate", is(9.876f));
+            .body("_embedded.rateList.size()", is(1))
+            .body("_embedded.rateList[0].date", is("2023-01-03"))
+            .body("_embedded.rateList[0].exchangeRate", is(7.654f));
     }
 
     @Test
     void getConversionShouldReturnCorrectConversion() {
-        rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.10")));
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.10")));
 
         when()
-            .get("/rates/search/conversion?currency=USD&date=2023-08-06&foreignAmount=110")
+            .get("/rates/{id}/conversion?foreignAmount=110", rate.getId())
         .then()
             .status(HttpStatus.OK)
             .body("euroAmount", is(100f));
+    }
+
+    @Test
+    void getConversionShouldReturnDefaultAmount() {
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.25")));
+
+        when()
+            .get("/rates/{id}/conversion", rate.getId())
+        .then()
+            .status(HttpStatus.OK)
+            .body("euroAmount", is(0.8f));
     }
 
     @Test

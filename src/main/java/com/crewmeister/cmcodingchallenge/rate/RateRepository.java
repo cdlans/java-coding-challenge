@@ -1,10 +1,10 @@
 package com.crewmeister.cmcodingchallenge.rate;
 
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,28 +15,24 @@ public interface RateRepository extends Repository<Rate, Long> {
 
     Page<Rate> findAll(Pageable page);
 
+    Page<Rate> findAll(Example<Rate> rateExample, Pageable pageable);
+
     Optional<Rate> findById(Long id);
-
-    Page<Rate> findByCurrency(String currency, Pageable pageable);
-
-    Page<Rate> findByDate(LocalDate date, Pageable pageable);
 
     Optional<Rate> findByCurrencyAndDate(String currency, LocalDate date);
 
-    @RestResource(exported = false)
     Rate save(Rate rate);
 
-    @RestResource(exported = false)
     List<Rate> saveAll(Iterable<Rate> rates);
 
     @Query("""
         SELECT
-            :currency as currency,
-            :date as date,
+            r.currency as currency,
+            r.date as date,
             :foreignAmount as foreignAmount,
             :foreignAmount / r.exchangeRate AS euroAmount
         FROM Rate r
-        WHERE r.currency = :currency AND r.date = :date
+        WHERE r.id = :id
     """)
-    Conversion conversion(String currency, LocalDate date, BigDecimal foreignAmount);
+    Conversion conversion(Long id, BigDecimal foreignAmount);
 }
