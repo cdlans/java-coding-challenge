@@ -3,9 +3,32 @@ package com.crewmeister.cmcodingchallenge.rate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public interface Conversion {
-    String getCurrency();
-    LocalDate getDate();
-    BigDecimal getForeignAmount();
-    BigDecimal getEuroAmount();
+public class Conversion {
+    String currency;
+    LocalDate date;
+    BigDecimal foreignAmount;
+    BigDecimal euroAmount;
+
+    public Conversion(String currency, LocalDate date, BigDecimal foreignAmount, BigDecimal euroAmount) {
+        this.currency = currency;
+        this.date = date;
+        this.foreignAmount = foreignAmount;
+        this.euroAmount = euroAmount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public BigDecimal getForeignAmount() {
+        return foreignAmount;
+    }
+
+    public BigDecimal getEuroAmount() {
+        return euroAmount;
+    }
 }

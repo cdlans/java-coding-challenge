@@ -27,22 +27,23 @@ public class RateController {
     private final RateRepository rateRepository;
     private final RateModelAssembler rateModelAssembler;
     private final PagedResourcesAssembler<Rate> pagedResourcesAssembler;
+    private final ConversionService conversionService;
 
 
     RateController(RateRepository rateRepository,
                    RateModelAssembler rateModelAssembler,
-                   PagedResourcesAssembler<Rate> pagedResourcesAssembler
-    ) {
+                   PagedResourcesAssembler<Rate> pagedResourcesAssembler,
+                   ConversionService conversionService) {
         this.rateRepository = rateRepository;
         this.rateModelAssembler = rateModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
+        this.conversionService = conversionService;
     }
 
     @GetMapping
     public PagedModel<EntityModel<Rate>> findAll(@RequestParam(required = false) String currency,
                                           @RequestParam(required = false) LocalDate date,
-                                          Pageable pageable
-    ) {
+                                          Pageable pageable) {
         Example<Rate> example = Example.of(new Rate(currency, date, null));
         Page<Rate> page = rateRepository.findAll(example, pageable);
 
@@ -60,13 +61,19 @@ public class RateController {
     }
 
     @GetMapping(value = "/{id}/conversion")
-    public EntityModel<Conversion> convert(@PathVariable Long id, @RequestParam(defaultValue = "1") BigDecimal foreignAmount) {
+    public EntityModel<Conversion> convert(@PathVariable Long id,
+                                           @RequestParam(defaultValue = "1") BigDecimal foreignAmount) {
         Rate rate = rateRepository.findById(id).orElseThrow(() -> {
-                    String message = String.format("Could not find rate '%s'", id);
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
+            String message = String.format("Could not find rate '%s'", id);
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
 
-        Conversion conversion = rateRepository.conversion(rate.getId(), foreignAmount);
+        Conversion conversion;
+        try {
+            conversion = conversionService.conversion(rate, foreignAmount);
+        } catch (ConversionException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
 
         return EntityModel.of(conversion,
                 linkTo(methodOn(RateController.class).convert(rate.getId(), foreignAmount)).withSelfRel(),
