@@ -15,6 +15,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
@@ -44,10 +45,27 @@ class CurrencyTest {
             .get("/currencies")
         .then()
             .status(HttpStatus.OK)
-            .body("content.size()", is(3))
-            .body("content", hasItem(hasEntry("code", "EUR")))
-            .body("content", hasItem(hasEntry("code", "USD")))
-            .body("content", hasItem(hasEntry("code", "CHF")));
+            .body("_embedded.currencies.size()", is(3))
+            .body("_embedded.currencies", hasItem(hasEntry("code", "EUR")))
+            .body("_embedded.currencies", hasItem(hasEntry("code", "USD")))
+            .body("_embedded.currencies", hasItem(hasEntry("code", "CHF")));
+    }
+
+    @Test
+    void getCurrenciesShouldReturnPagedResult() {
+        currencyRepository.save(new Currency("EUR"));
+        currencyRepository.save(new Currency("USD"));
+        currencyRepository.save(new Currency("CHF"));
+
+        when()
+            .get("/currencies?page=1&size=2")
+        .then()
+            .status(HttpStatus.OK)
+            .body("_embedded.currencies.size()", is(1))
+            .body("_links.first", hasKey("href"))
+            .body("_links.prev", hasKey("href"))
+            .body("_links.self", hasKey("href"))
+            .body("_links.last", hasKey("href"));
     }
 
     @Test

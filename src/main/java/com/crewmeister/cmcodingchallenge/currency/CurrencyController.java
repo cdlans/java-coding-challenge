@@ -2,6 +2,9 @@ package com.crewmeister.cmcodingchallenge.currency;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,21 +17,32 @@ import org.springframework.web.server.ResponseStatusException;
 public class CurrencyController {
 
     private final CurrencyRepository currencyRepository;
+    private final CurrencyModelAssembler currencyModelAssembler;
+    private final PagedResourcesAssembler<Currency> pagedResourcesAssembler;
 
-    CurrencyController(CurrencyRepository currencyRepository) {
+
+    CurrencyController(CurrencyRepository currencyRepository,
+                       CurrencyModelAssembler currencyModelAssembler,
+                       PagedResourcesAssembler<Currency> pagedResourcesAssembler) {
         this.currencyRepository = currencyRepository;
+        this.currencyModelAssembler = currencyModelAssembler;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
     @GetMapping
-    Page<Currency> findAll(Pageable pageable) {
-        return currencyRepository.findAll(pageable);
+    PagedModel<EntityModel<Currency>> findAll(Pageable pageable) {
+        Page<Currency> page = currencyRepository.findAll(pageable);
+
+        return pagedResourcesAssembler.toModel(page, currencyModelAssembler);
     }
 
     @GetMapping(value = "/{id}")
-    Currency findOne(@PathVariable String id) {
-        return currencyRepository.findById(id).orElseThrow(() -> {
+    EntityModel<Currency> findOne(@PathVariable String id) {
+        Currency currency = currencyRepository.findById(id).orElseThrow(() -> {
                     String message = String.format("Could not find currency '%s'", id);
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
+
+        return currencyModelAssembler.toModel(currency);
     }
 }
