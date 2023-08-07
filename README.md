@@ -28,12 +28,12 @@ As we are using user story format to specify our requirements, here are the user
       [`http://localhost:8080/api/v1/rates`](http://localhost:8080/api/v1/rates)
 - As a client, I want to get the EUR-FX exchange rate at particular day
   - To get all exchange rates on 2023-08-04, use the following URL:  
-    [`http://localhost:8080/api/v1/rates/search/findByDate?date=2023-08-04`](http://localhost:8080/api/v1/rates/search/findByDate?date=2023-08-04)
+    [`http://localhost:8080/api/v1/rates?date=2023-08-04`](http://localhost:8080/api/v1/rates?date=2023-08-04)
   - To get the exchange rate on 2023-08-04 for the USD, use the following URL:  
-    [`http://localhost:8080/api/v1/rates/search/findByCurrencyAndDate?currency=USD&date=2023-08-04`](http://localhost:8080/api/v1/rates/search/findByCurrencyAndDate?currency=USD&date=2023-08-04)
+    [`http://localhost:8080/api/v1/rates?currency=USD&date=2023-08-04`](http://localhost:8080/api/v1/rates?currency=USD&date=2023-08-04)
 - As a client, I want to get a foreign exchange amount for a given currency converted to EUR on a particular day
-  - To convert USD 200 to EUR on 2023-08-04, use the following URL:  
-    [`http://localhost:8080/api/v1/rates/search/conversion?currency=USD&date=2023-08-04&foreignAmount=200`](http://localhost:8080/api/v1/rates/search/conversion?currency=USD&date=2023-08-04&foreignAmount=200)
+  - Find the rate with the URL above and then use the `conversion` hypertext link to find the amount. If the URL above returned a rate with, for example, ID 244, then to find the amount of EUR when converting 200 USD on 2023-08-04, use the following URL:  
+    [`http://localhost:8080/api/v1/rates/1/conversion?foreignAmount=200`](http://localhost:8080/api/v1/rates/1/conversion?foreignAmount=200)
 
 If you think that your service would require storage, please use H2 for simplicity, even if this would not be your choice if 
 you would implement an endpoint for real clients. 

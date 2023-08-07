@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/v2/currencies")
+@RequestMapping("/api/v1/currencies")
 public class CurrencyController {
 
     private final CurrencyRepository currencyRepository;

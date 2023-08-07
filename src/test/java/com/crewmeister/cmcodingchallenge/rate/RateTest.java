@@ -32,7 +32,7 @@ class RateTest {
     @BeforeEach
     void setup(WebApplicationContext context) {
         RestAssuredMockMvc.webAppContextSetup(context);
-        RestAssuredMockMvc.basePath = "/api/v2";
+        RestAssuredMockMvc.basePath = "/api/v1";
         RestAssuredMockMvc.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
