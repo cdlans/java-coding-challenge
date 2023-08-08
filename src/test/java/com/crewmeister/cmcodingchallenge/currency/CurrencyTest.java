@@ -84,7 +84,8 @@ class CurrencyTest {
         when()
             .get("/currencies/XYZ")
         .then()
-            .status(HttpStatus.NOT_FOUND);
+            .status(HttpStatus.NOT_FOUND)
+            .body("detail", is("Could not find currency 'XYZ'"));
     }
 
     @Test
@@ -98,6 +99,7 @@ class CurrencyTest {
         .when()
             .post("/currencies")
         .then()
-            .status(HttpStatus.METHOD_NOT_ALLOWED);
+            .status(HttpStatus.METHOD_NOT_ALLOWED)
+            .body("detail", is("Method 'POST' is not supported."));
     }
 }

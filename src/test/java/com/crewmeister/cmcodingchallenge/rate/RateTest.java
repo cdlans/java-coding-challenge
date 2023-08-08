@@ -18,6 +18,7 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 
 @SpringBootTest
 @Transactional
@@ -130,6 +131,28 @@ class RateTest {
     }
 
     @Test
+    void getConversionShouldNotAllowDenialOfServiceAttack() {
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.25")));
+
+        when()
+            .get("/rates/{id}/conversion?foreignAmount=5e912345", rate.getId())
+        .then()
+            .status(HttpStatus.BAD_REQUEST)
+            .body("detail", startsWith("conversion.foreignAmount: must be less than or equal to"));
+    }
+
+    @Test
+    void shouldReturnInternalServerErrorForArithmeticException() {
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("0")));
+
+        when()
+            .get("/rates/{id}/conversion?foreignAmount=200", rate.getId())
+        .then()
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("detail", startsWith("Could not convert currency USD"));
+    }
+
+    @Test
     void postRatesShouldNotBeAllowed() {
         String json = """
                     { "currency": "EUR", "date": "2023-08-03", "exchangeRate": 1.234 }
@@ -140,6 +163,7 @@ class RateTest {
         .when()
             .post("/rates")
         .then()
-            .status(HttpStatus.METHOD_NOT_ALLOWED);
+            .status(HttpStatus.METHOD_NOT_ALLOWED)
+            .body("detail", is("Method 'POST' is not supported."));
     }
 }
