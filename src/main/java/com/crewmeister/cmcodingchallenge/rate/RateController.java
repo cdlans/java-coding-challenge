@@ -90,12 +90,7 @@ public class RateController {
             return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
 
-        Conversion conversion;
-        try {
-            conversion = conversionService.conversion(rate, foreignAmount);
-        } catch (ConversionException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+        Conversion conversion = conversionService.conversion(rate, foreignAmount);
 
         return EntityModel.of(conversion,
                 linkTo(methodOn(RateController.class).conversion(rate.getId(), foreignAmount)).withSelfRel(),
