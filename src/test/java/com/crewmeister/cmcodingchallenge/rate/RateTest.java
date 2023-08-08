@@ -24,11 +24,8 @@ import static org.hamcrest.Matchers.startsWith;
 @Transactional
 class RateTest {
 
-    @MockBean
-    CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
-
-    @Autowired
-    RateRepository rateRepository;
+    @Autowired private RateRepository rateRepository;
+    @MockBean private CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
 
     @BeforeEach
     void setup(WebApplicationContext context) {

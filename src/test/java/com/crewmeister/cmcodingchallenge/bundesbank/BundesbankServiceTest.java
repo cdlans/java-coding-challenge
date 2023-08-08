@@ -1,7 +1,5 @@
 package com.crewmeister.cmcodingchallenge.bundesbank;
 
-import com.crewmeister.cmcodingchallenge.currency.Currency;
-import com.crewmeister.cmcodingchallenge.currency.CurrencyRepository;
 import com.crewmeister.cmcodingchallenge.rate.Rate;
 import com.crewmeister.cmcodingchallenge.rate.RateRepository;
 import jakarta.transaction.Transactional;
@@ -27,7 +25,6 @@ import static org.mockito.Mockito.when;
 @Transactional
 class BundesbankServiceTest {
 
-    @Autowired private CurrencyRepository currencyRepository;
     @Autowired private RateRepository rateRepository;
     @Autowired private BundesbankService bundesbankService;
     @MockBean private BundesbankClient bundesbankClient;
@@ -41,10 +38,10 @@ class BundesbankServiceTest {
 
         bundesbankService.initializeRates();
 
-        List<Currency> currencies = currencyRepository.findAll(Pageable.unpaged()).getContent();
+        List<String> currencies = rateRepository.findAllCurrencies(Pageable.unpaged()).getContent();
         assertEquals(42, currencies.size());
-        assertEquals("AUD", currencies.get(0).getId());
-        assertEquals("ZAR", currencies.get(41).getId());
+        assertEquals("AUD", currencies.get(0));
+        assertEquals("ZAR", currencies.get(41));
 
         List<Rate> rates = rateRepository.findAll(Pageable.unpaged()).getContent();
         assertEquals(251, rates.size());

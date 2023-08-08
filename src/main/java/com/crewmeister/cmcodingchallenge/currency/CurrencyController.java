@@ -1,5 +1,6 @@
 package com.crewmeister.cmcodingchallenge.currency;
 
+import com.crewmeister.cmcodingchallenge.rate.RateRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,14 +20,14 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping(value = "/api/v1/currencies", produces = "application/json")
 public class CurrencyController {
 
-    private final CurrencyRepository currencyRepository;
+    private final RateRepository rateRepository;
     private final CurrencyModelAssembler currencyModelAssembler;
     private final PagedResourcesAssembler<Currency> pagedResourcesAssembler;
 
-    CurrencyController(CurrencyRepository currencyRepository,
+    CurrencyController(RateRepository rateRepository,
                        CurrencyModelAssembler currencyModelAssembler,
                        PagedResourcesAssembler<Currency> pagedResourcesAssembler) {
-        this.currencyRepository = currencyRepository;
+        this.rateRepository = rateRepository;
         this.currencyModelAssembler = currencyModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
@@ -34,7 +35,8 @@ public class CurrencyController {
     @Operation(summary = "Find all currencies")
     @GetMapping
     public PagedModel<EntityModel<Currency>> findAll(@ParameterObject Pageable pageable) {
-        Page<Currency> page = currencyRepository.findAll(pageable);
+        Page<Currency> page = rateRepository.findAllCurrencies(pageable)
+                .map(Currency::new);
 
         return pagedResourcesAssembler.toModel(page, currencyModelAssembler);
     }
@@ -45,11 +47,11 @@ public class CurrencyController {
             @Parameter(description="The three-letter currency code, for example 'USD'")
             @PathVariable String id
     ) {
-        Currency currency = currencyRepository.findById(id).orElseThrow(() -> {
+        String currency = rateRepository.findCurrencyById(id).orElseThrow(() -> {
                     String message = String.format("Could not find currency '%s'", id);
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
 
-        return currencyModelAssembler.toModel(currency);
+        return currencyModelAssembler.toModel(new Currency(currency));
     }
 }

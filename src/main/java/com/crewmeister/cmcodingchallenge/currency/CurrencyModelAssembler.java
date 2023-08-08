@@ -1,5 +1,6 @@
 package com.crewmeister.cmcodingchallenge.currency;
 
+import com.crewmeister.cmcodingchallenge.rate.RateController;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -17,6 +18,7 @@ public class CurrencyModelAssembler implements RepresentationModelAssembler<Curr
     public EntityModel<Currency> toModel(@NonNull Currency currency) {
         return EntityModel.of(currency,
                 linkTo(methodOn(CurrencyController.class).findOne(currency.getId())).withSelfRel(),
-                linkTo(methodOn(CurrencyController.class).findAll(Pageable.unpaged())).withRel("currencies"));
+                linkTo(methodOn(CurrencyController.class).findAll(Pageable.unpaged())).withRel("currencies"),
+                linkTo(methodOn(RateController.class).findAll(currency.getId(), null, Pageable.unpaged())).withRel("rates"));
     }
 }

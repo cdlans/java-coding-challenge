@@ -1,7 +1,6 @@
 package com.crewmeister.cmcodingchallenge.bundesbank;
 
 import com.crewmeister.cmcodingchallenge.currency.Currency;
-import com.crewmeister.cmcodingchallenge.currency.CurrencyRepository;
 import com.crewmeister.cmcodingchallenge.rate.Rate;
 import com.crewmeister.cmcodingchallenge.rate.RateRepository;
 import com.jayway.jsonpath.Configuration;
@@ -29,13 +28,10 @@ import java.util.Set;
 public class BundesbankService {
     private final Logger log = LoggerFactory.getLogger(BundesbankService.class);
     private final BundesbankClient bundesbankClient;
-    private final CurrencyRepository currencyRepository;
     private final RateRepository rateRepository;
 
-    BundesbankService(BundesbankClient bundesbankClient, CurrencyRepository currencyRepository,
-                      RateRepository rateRepository) {
+    BundesbankService(BundesbankClient bundesbankClient, RateRepository rateRepository) {
         this.bundesbankClient = bundesbankClient;
-        this.currencyRepository = currencyRepository;
         this.rateRepository = rateRepository;
 
         Configuration.setDefaults(new Configuration.Defaults() {
@@ -66,8 +62,6 @@ public class BundesbankService {
         TypeRef<List<Currency>> currencyListType = new TypeRef<>() { };
         List<Currency> currencies =
                 jsonContext.read("$.data.structure.dimensions.series[1].values[*].id", currencyListType);
-
-        currencyRepository.saveAll(currencies);
 
         log.info("Extracted and stored {} currencies", currencies.size());
         return currencies;

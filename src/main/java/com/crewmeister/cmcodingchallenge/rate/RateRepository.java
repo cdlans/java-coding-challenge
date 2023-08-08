@@ -3,6 +3,7 @@ package com.crewmeister.cmcodingchallenge.rate;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
 import java.time.LocalDate;
@@ -22,4 +23,10 @@ public interface RateRepository extends Repository<Rate, Long> {
     Rate save(Rate rate);
 
     List<Rate> saveAll(Iterable<Rate> rates);
+
+    @Query("SELECT DISTINCT r.currency FROM Rate r")
+    Page<String> findAllCurrencies(Pageable page);
+
+    @Query("SELECT DISTINCT r.currency FROM Rate r WHERE r.currency = :id")
+    Optional<String> findCurrencyById(String id);
 }

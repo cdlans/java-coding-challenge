@@ -1,5 +1,7 @@
 package com.crewmeister.cmcodingchallenge.currency;
 
+import com.crewmeister.cmcodingchallenge.rate.Rate;
+import com.crewmeister.cmcodingchallenge.rate.RateRepository;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
@@ -22,11 +27,8 @@ import static org.hamcrest.Matchers.is;
 @Transactional
 class CurrencyTest {
 
-    @MockBean
-    CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
-
-    @Autowired
-    CurrencyRepository currencyRepository;
+    @Autowired private RateRepository rateRepository;
+    @MockBean private CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
 
     @BeforeEach
     void setup(WebApplicationContext context) {
@@ -37,9 +39,9 @@ class CurrencyTest {
 
     @Test
     void getCurrenciesShouldReturnCollectionOfCurrencies() {
-        currencyRepository.save(new Currency("EUR"));
-        currencyRepository.save(new Currency("USD"));
-        currencyRepository.save(new Currency("CHF"));
+        rateRepository.save(new Rate("EUR", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
+        rateRepository.save(new Rate("USD", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
+        rateRepository.save(new Rate("CHF", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
 
         when()
             .get("/currencies")
@@ -53,9 +55,9 @@ class CurrencyTest {
 
     @Test
     void getCurrenciesShouldReturnPagedResult() {
-        currencyRepository.save(new Currency("EUR"));
-        currencyRepository.save(new Currency("USD"));
-        currencyRepository.save(new Currency("CHF"));
+        rateRepository.save(new Rate("EUR", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
+        rateRepository.save(new Rate("USD", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
+        rateRepository.save(new Rate("CHF", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
 
         when()
             .get("/currencies?page=1&size=2")
@@ -70,7 +72,7 @@ class CurrencyTest {
 
     @Test
     void getCurrencyByIdShouldReturnCurrency() {
-        currencyRepository.save(new Currency("USD"));
+        rateRepository.save(new Rate("USD", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
 
         when()
             .get("/currencies/USD")
