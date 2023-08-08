@@ -52,9 +52,4 @@ public class Rate {
     public BigDecimal getExchangeRate() {
         return exchangeRate;
     }
-
-    @Override
-    public String toString() {
-        return String.format("Rate[currency='%s', date='%s', rate=%s]", currency, date, exchangeRate);
-    }
 }

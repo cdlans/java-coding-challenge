@@ -90,7 +90,7 @@ public class BundesbankService {
 
         for (int i = 0; i < currencies.size(); i++) {
             List<Rate> rates = new ArrayList<>();
-            String currency = currencies.get(i).getCode();
+            String currency = currencies.get(i).getId();
             Map<String, List<Object>> dateIndexToRate =
                     jsonContext.read("$.data.dataSets[0].series.0:" + i + ":0:0:0:0.observations");
 

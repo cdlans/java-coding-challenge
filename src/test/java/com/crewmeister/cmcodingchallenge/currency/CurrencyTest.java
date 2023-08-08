@@ -46,9 +46,9 @@ class CurrencyTest {
         .then()
             .status(HttpStatus.OK)
             .body("_embedded.currencyList.size()", is(3))
-            .body("_embedded.currencyList", hasItem(hasEntry("code", "EUR")))
-            .body("_embedded.currencyList", hasItem(hasEntry("code", "USD")))
-            .body("_embedded.currencyList", hasItem(hasEntry("code", "CHF")));
+            .body("_embedded.currencyList", hasItem(hasEntry("id", "EUR")))
+            .body("_embedded.currencyList", hasItem(hasEntry("id", "USD")))
+            .body("_embedded.currencyList", hasItem(hasEntry("id", "CHF")));
     }
 
     @Test
@@ -76,7 +76,7 @@ class CurrencyTest {
             .get("/currencies/USD")
         .then()
             .status(HttpStatus.OK)
-            .body("code", is("USD"));
+            .body("id", is("USD"));
     }
 
     @Test
