@@ -62,8 +62,9 @@ The project was generated through the Spring initializer [1] for Java
 $ mvn spring-boot:run
 ````
 
-After running, the project, switch to your browser and hit http://localhost:8080/api/currencies. You should see some 
-demo output. 
+After running, the project, switch to your browser and hit http://localhost:8080/api/v1/currencies.
+
+Alternatively, you can explore the API using the Swagger UI at http://localhost:8080/swagger-ui/index.html.
 
 
 [1] https://start.spring.io/

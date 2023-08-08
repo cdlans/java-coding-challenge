@@ -24,6 +24,6 @@ public class ConversionService {
             throw exception;
         }
 
-        return new Conversion(rate.getCurrency(), rate.getDate(), foreignAmount, euroAmount);
+        return new Conversion(rate.getCurrency(), rate.getDate(), rate.getExchangeRate(), foreignAmount, euroAmount);
     }
 }

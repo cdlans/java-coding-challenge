@@ -21,6 +21,7 @@ class ConversionServiceTest {
 
         assertEquals("USD", conversion.getCurrency());
         assertEquals(LocalDate.of(2023, 8, 6), conversion.getDate());
+        assertEquals(new BigDecimal("1.10"), conversion.getExchangeRate());
         assertEquals(new BigDecimal("110"), conversion.getForeignAmount());
         assertEquals(new BigDecimal("100.00"), conversion.getEuroAmount());
     }

@@ -6,12 +6,15 @@ import java.time.LocalDate;
 public class Conversion {
     String currency;
     LocalDate date;
+    BigDecimal exchangeRate;
     BigDecimal foreignAmount;
     BigDecimal euroAmount;
 
-    public Conversion(String currency, LocalDate date, BigDecimal foreignAmount, BigDecimal euroAmount) {
+    public Conversion(String currency, LocalDate date, BigDecimal exchangeRate, BigDecimal foreignAmount,
+                      BigDecimal euroAmount) {
         this.currency = currency;
         this.date = date;
+        this.exchangeRate = exchangeRate;
         this.foreignAmount = foreignAmount;
         this.euroAmount = euroAmount;
     }
@@ -22,6 +25,10 @@ public class Conversion {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public BigDecimal getExchangeRate() {
+        return exchangeRate;
     }
 
     public BigDecimal getForeignAmount() {

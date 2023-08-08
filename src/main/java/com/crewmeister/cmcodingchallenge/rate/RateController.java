@@ -1,5 +1,8 @@
 package com.crewmeister.cmcodingchallenge.rate;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +24,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/v1/rates")
+@RequestMapping(value = "/api/v1/rates", produces = "application/json")
 public class RateController {
 
     private final RateRepository rateRepository;
     private final RateModelAssembler rateModelAssembler;
     private final PagedResourcesAssembler<Rate> pagedResourcesAssembler;
     private final ConversionService conversionService;
-
 
     RateController(RateRepository rateRepository,
                    RateModelAssembler rateModelAssembler,
@@ -40,18 +42,27 @@ public class RateController {
         this.conversionService = conversionService;
     }
 
+    @Operation(summary = "Find all rates, optionally filtered by currency and/or rate")
     @GetMapping
-    public PagedModel<EntityModel<Rate>> findAll(@RequestParam(required = false) String currency,
-                                          @RequestParam(required = false) LocalDate date,
-                                          Pageable pageable) {
+    public PagedModel<EntityModel<Rate>> findAll(
+            @Parameter(description="The three-letter currency code to filter by, for example 'USD'")
+            @RequestParam(required = false) String currency,
+            @Parameter(description="The date to filter by formatted as yyyy-mm-dd, for example '2021-12-31'")
+            @RequestParam(required = false) LocalDate date,
+            @ParameterObject Pageable pageable
+    ) {
         Example<Rate> example = Example.of(new Rate(currency, date, null));
         Page<Rate> page = rateRepository.findAll(example, pageable);
 
         return pagedResourcesAssembler.toModel(page, rateModelAssembler);
     }
 
+    @Operation(summary = "Find a rate by ID")
     @GetMapping(value = "/{id}")
-    public EntityModel<Rate> findOne(@PathVariable Long id) {
+    public EntityModel<Rate> findOne(
+            @Parameter(description="The numeric ID of a rate, for example '42'")
+            @PathVariable Long id
+    ) {
         Rate rate = rateRepository.findById(id).orElseThrow(() -> {
                     String message = String.format("Could not find rate '%s'", id);
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
@@ -60,9 +71,14 @@ public class RateController {
         return rateModelAssembler.toModel(rate);
     }
 
+    @Operation(summary = "Get a conversion to EUR for a foreign currency")
     @GetMapping(value = "/{id}/conversion")
-    public EntityModel<Conversion> conversion(@PathVariable Long id,
-                                              @RequestParam(defaultValue = "1") BigDecimal foreignAmount) {
+    public EntityModel<Conversion> conversion(
+            @Parameter(description="The numeric ID of a rate, for example '42'")
+            @PathVariable Long id,
+            @Parameter(description="The amount of the foreign currency to convert, for example '200'")
+            @RequestParam(defaultValue = "1") BigDecimal foreignAmount
+    ) {
         Rate rate = rateRepository.findById(id).orElseThrow(() -> {
             String message = String.format("Could not find rate '%s'", id);
             return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
