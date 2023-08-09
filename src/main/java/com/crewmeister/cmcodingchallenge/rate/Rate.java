@@ -19,7 +19,7 @@ public class Rate {
 
     private LocalDate date;
 
-    @Column(precision = 20, scale = 10)
+    @Column(precision = 20, scale = 6)
     private BigDecimal exchangeRate;
 
     protected Rate() {
