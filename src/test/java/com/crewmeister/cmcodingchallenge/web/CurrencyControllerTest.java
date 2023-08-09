@@ -1,7 +1,7 @@
-package com.crewmeister.cmcodingchallenge.currency;
+package com.crewmeister.cmcodingchallenge.web;
 
-import com.crewmeister.cmcodingchallenge.rate.Rate;
-import com.crewmeister.cmcodingchallenge.rate.RateRepository;
+import com.crewmeister.cmcodingchallenge.domain.Rate;
+import com.crewmeister.cmcodingchallenge.domain.RateRepository;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;

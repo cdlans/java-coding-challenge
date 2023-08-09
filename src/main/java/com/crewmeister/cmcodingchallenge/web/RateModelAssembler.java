@@ -1,6 +1,6 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.web;
 
-import com.crewmeister.cmcodingchallenge.currency.CurrencyController;
+import com.crewmeister.cmcodingchallenge.domain.Rate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;

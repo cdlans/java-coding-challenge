@@ -1,6 +1,6 @@
 package com.crewmeister.cmcodingchallenge.bundesbank;
 
-import com.crewmeister.cmcodingchallenge.rate.Rate;
+import com.crewmeister.cmcodingchallenge.domain.Rate;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
 

@@ -2,7 +2,7 @@ package com.crewmeister.cmcodingchallenge;
 
 import com.crewmeister.cmcodingchallenge.bundesbank.BundesbankClient;
 import com.crewmeister.cmcodingchallenge.bundesbank.BundesbankCsvConverter;
-import com.crewmeister.cmcodingchallenge.rate.RateRepository;
+import com.crewmeister.cmcodingchallenge.domain.RateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

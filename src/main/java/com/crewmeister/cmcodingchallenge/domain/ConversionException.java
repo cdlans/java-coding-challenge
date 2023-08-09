@@ -1,4 +1,4 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.domain;
 
 public class ConversionException extends RuntimeException {
 

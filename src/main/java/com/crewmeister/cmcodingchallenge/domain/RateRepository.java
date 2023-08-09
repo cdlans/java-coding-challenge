@@ -1,4 +1,4 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.domain;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

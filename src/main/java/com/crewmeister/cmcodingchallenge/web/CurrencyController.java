@@ -1,6 +1,6 @@
-package com.crewmeister.cmcodingchallenge.currency;
+package com.crewmeister.cmcodingchallenge.web;
 
-import com.crewmeister.cmcodingchallenge.rate.RateRepository;
+import com.crewmeister.cmcodingchallenge.domain.RateRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.annotations.ParameterObject;

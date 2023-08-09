@@ -1,5 +1,6 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.web;
 
+import com.crewmeister.cmcodingchallenge.domain.ConversionException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

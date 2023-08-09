@@ -1,5 +1,6 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.domain;
 
+import com.crewmeister.cmcodingchallenge.web.Conversion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -58,7 +59,7 @@ public class Rate {
         return exchangeRate;
     }
 
-    Conversion convert(BigDecimal foreignAmount) throws ConversionException {
+    public Conversion convert(BigDecimal foreignAmount) throws ConversionException {
         BigDecimal euroAmount;
         try {
             euroAmount = foreignAmount.divide(getExchangeRate(), EURO_AMOUNT_SCALE, RoundingMode.HALF_EVEN);

@@ -1,5 +1,6 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.domain;
 
+import com.crewmeister.cmcodingchallenge.web.Conversion;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

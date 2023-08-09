@@ -1,4 +1,4 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.web;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package com.crewmeister.cmcodingchallenge.bundesbank;
 
-import com.crewmeister.cmcodingchallenge.rate.Rate;
+import com.crewmeister.cmcodingchallenge.domain.Rate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

@@ -1,5 +1,7 @@
-package com.crewmeister.cmcodingchallenge.rate;
+package com.crewmeister.cmcodingchallenge.web;
 
+import com.crewmeister.cmcodingchallenge.domain.Rate;
+import com.crewmeister.cmcodingchallenge.domain.RateRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
