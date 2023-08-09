@@ -6,11 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
 public class Rate {
+
+    private static final int EURO_AMOUNT_SCALE = 2;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -52,6 +56,19 @@ public class Rate {
 
     public BigDecimal getExchangeRate() {
         return exchangeRate;
+    }
+
+    Conversion convert(BigDecimal foreignAmount) throws ConversionException {
+        BigDecimal euroAmount;
+        try {
+            euroAmount = foreignAmount.divide(getExchangeRate(), EURO_AMOUNT_SCALE, RoundingMode.HALF_EVEN);
+        } catch (ArithmeticException cause) {
+            String message = String.format("Could not convert currency %s %f to EUR with exchange rate %f",
+                    getCurrency(), foreignAmount, getExchangeRate());
+            throw new ConversionException(message, cause);
+        }
+
+        return new Conversion(getCurrency(), getDate(), getExchangeRate(), foreignAmount, euroAmount);
     }
 
     @Override

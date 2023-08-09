@@ -34,16 +34,13 @@ public class RateController {
     private final RateRepository rateRepository;
     private final RateModelAssembler rateModelAssembler;
     private final PagedResourcesAssembler<Rate> pagedResourcesAssembler;
-    private final ConversionService conversionService;
 
     RateController(RateRepository rateRepository,
                    RateModelAssembler rateModelAssembler,
-                   PagedResourcesAssembler<Rate> pagedResourcesAssembler,
-                   ConversionService conversionService) {
+                   PagedResourcesAssembler<Rate> pagedResourcesAssembler) {
         this.rateRepository = rateRepository;
         this.rateModelAssembler = rateModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
-        this.conversionService = conversionService;
     }
 
     @Operation(summary = "Find all rates, optionally filtered by currency and/or rate")
@@ -90,7 +87,7 @@ public class RateController {
             return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
 
-        Conversion conversion = conversionService.conversion(rate, foreignAmount);
+        Conversion conversion = rate.convert(foreignAmount);
 
         return EntityModel.of(conversion,
                 linkTo(methodOn(RateController.class).conversion(rate.getId(), foreignAmount)).withSelfRel(),

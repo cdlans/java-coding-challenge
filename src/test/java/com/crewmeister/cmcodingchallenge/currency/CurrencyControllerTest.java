@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
 @Transactional
-class CurrencyTest {
+class CurrencyControllerTest {
 
     @Autowired private RateRepository rateRepository;
     @MockBean private CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
