@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,10 +28,13 @@ class RateTest {
     @Autowired private RateRepository rateRepository;
     @MockBean private CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
 
+    @Value("${crewmeister.web.base-path}")
+    String basePath;
+
     @BeforeEach
     void setup(WebApplicationContext context) {
         RestAssuredMockMvc.webAppContextSetup(context);
-        RestAssuredMockMvc.basePath = "/api/v1";
+        RestAssuredMockMvc.basePath = basePath;
         RestAssuredMockMvc.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 

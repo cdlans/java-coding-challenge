@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping(value = "/api/v1/currencies", produces = "application/json")
+@RequestMapping(value = "${crewmeister.web.base-path}/currencies", produces = "application/json")
 public class CurrencyController {
 
     private final RateRepository rateRepository;

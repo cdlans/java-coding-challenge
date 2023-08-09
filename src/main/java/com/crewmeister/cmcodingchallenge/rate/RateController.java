@@ -27,7 +27,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(value = "/api/v1/rates", produces = "application/json")
+@RequestMapping(value = "${crewmeister.web.base-path}/rates", produces = "application/json")
 @Validated
 public class RateController {
 
