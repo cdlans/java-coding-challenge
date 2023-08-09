@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Rate {
@@ -51,5 +52,20 @@ public class Rate {
 
     public BigDecimal getExchangeRate() {
         return exchangeRate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rate rate = (Rate) o;
+        return Objects.equals(currency, rate.currency)
+                && Objects.equals(date, rate.date)
+                && Objects.equals(exchangeRate, rate.exchangeRate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currency, date, exchangeRate);
     }
 }
