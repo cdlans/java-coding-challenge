@@ -29,7 +29,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(value = "${crewmeister.web.base-path}/rates", produces = "application/json")
+@RequestMapping(value = BasePath.BASE_PATH + "/rates", produces = "application/json")
 @Validated
 public class RateController {
 

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import static com.crewmeister.cmcodingchallenge.web.BasePath.BASE_PATH;
+
 @RestController
-@RequestMapping(value = "${crewmeister.web.base-path}/currencies", produces = "application/json")
+@RequestMapping(value = BASE_PATH + "/currencies", produces = "application/json")
 public class CurrencyController {
 
     private final RateRepository rateRepository;

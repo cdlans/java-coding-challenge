@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,6 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 
+import static com.crewmeister.cmcodingchallenge.web.BasePath.BASE_PATH;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
 import static org.hamcrest.Matchers.hasEntry;
@@ -30,13 +30,10 @@ class RateControllerTest {
     @Autowired private RateRepository rateRepository;
     @MockBean private CommandLineRunner commandLineRunner; // Avoid fetching data from Bundesbank
 
-    @Value("${crewmeister.web.base-path}")
-    String basePath;
-
     @BeforeEach
     void setup(WebApplicationContext context) {
         RestAssuredMockMvc.webAppContextSetup(context);
-        RestAssuredMockMvc.basePath = basePath;
+        RestAssuredMockMvc.basePath = BASE_PATH;
         RestAssuredMockMvc.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
