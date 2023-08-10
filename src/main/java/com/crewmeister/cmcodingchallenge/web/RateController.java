@@ -1,5 +1,6 @@
 package com.crewmeister.cmcodingchallenge.web;
 
+import com.crewmeister.cmcodingchallenge.domain.ConversionDto;
 import com.crewmeister.cmcodingchallenge.domain.Rate;
 import com.crewmeister.cmcodingchallenge.domain.RateRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,7 +77,7 @@ public class RateController {
 
     @Operation(summary = "Get a conversion to EUR for a foreign currency")
     @GetMapping(value = "/{id}/conversion")
-    public EntityModel<Conversion> conversion(
+    public EntityModel<ConversionDto> conversion(
             @Parameter(description="The numeric ID of a rate, for example '42'")
             @PathVariable Long id,
             @Parameter(description="The amount of the foreign currency to convert, for example '200'")
@@ -89,7 +90,7 @@ public class RateController {
             return new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         });
 
-        Conversion conversion = rate.convert(foreignAmount);
+        ConversionDto conversion = rate.convert(foreignAmount);
 
         return EntityModel.of(conversion,
                 linkTo(methodOn(RateController.class).conversion(rate.getId(), foreignAmount)).withSelfRel(),
