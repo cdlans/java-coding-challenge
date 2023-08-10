@@ -26,12 +26,17 @@ public class BundesbankCsvConverter {
                     String dateString = values[7];
                     String rateString = values[8];
 
+                    if (currency.isBlank()) {
+                        log.error("Encountered a line with blank currency");
+                        return null;    // ignore malformed input
+                    }
+
                     Rate rate;
                     try {
                         rate = new Rate(currency, dateString, rateString);
                     } catch (DateTimeParseException | NumberFormatException e) {
                         log.error("Could not parse date '{}'", dateString, e);
-                        return null;
+                        return null;    // ignore malformed input
                     }
 
                     return rate;
