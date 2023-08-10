@@ -13,9 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import static com.crewmeister.cmcodingchallenge.web.BasePath.BASE_PATH;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
@@ -40,9 +37,9 @@ class CurrencyControllerTest {
 
     @Test
     void getCurrenciesShouldReturnCollectionOfCurrencies() {
-        rateRepository.save(new Rate("EUR", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
-        rateRepository.save(new Rate("USD", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
-        rateRepository.save(new Rate("CHF", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
+        rateRepository.save(new Rate("EUR", "2023-01-01", "1"));
+        rateRepository.save(new Rate("USD", "2023-01-01", "1"));
+        rateRepository.save(new Rate("CHF", "2023-01-01", "1"));
 
         when()
             .get("/currencies")
@@ -56,9 +53,9 @@ class CurrencyControllerTest {
 
     @Test
     void getCurrenciesShouldReturnPagedResult() {
-        rateRepository.save(new Rate("EUR", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
-        rateRepository.save(new Rate("USD", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
-        rateRepository.save(new Rate("CHF", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
+        rateRepository.save(new Rate("EUR", "2023-01-01", "1"));
+        rateRepository.save(new Rate("USD", "2023-01-01", "1"));
+        rateRepository.save(new Rate("CHF", "2023-01-01", "1"));
 
         when()
             .get("/currencies?page=1&size=2")
@@ -73,7 +70,7 @@ class CurrencyControllerTest {
 
     @Test
     void getCurrencyByIdShouldReturnCurrency() {
-        rateRepository.save(new Rate("USD", LocalDate.of(2023, 1, 1), new BigDecimal(1)));
+        rateRepository.save(new Rate("USD", "2023-01-01", "1"));
 
         when()
             .get("/currencies/USD")

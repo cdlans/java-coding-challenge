@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -28,23 +26,15 @@ public class BundesbankCsvConverter {
                     String dateString = values[7];
                     String rateString = values[8];
 
-                    LocalDate date;
+                    Rate rate;
                     try {
-                        date = LocalDate.parse(dateString);
-                    } catch (DateTimeParseException e) {
+                        rate = new Rate(currency, dateString, rateString);
+                    } catch (DateTimeParseException | NumberFormatException e) {
                         log.error("Could not parse date '{}'", dateString, e);
                         return null;
                     }
 
-                    BigDecimal rate;
-                    try {
-                        rate = new BigDecimal(rateString);
-                    } catch (NumberFormatException e) {
-                        log.error("Could not parse exchange rate '{}'", rateString, e);
-                        return null;
-                    }
-
-                    return new Rate(currency, date, rate);
+                    return rate;
                 })
                 .filter(Objects::nonNull);    // filter the `null` Rates in case there were parse errors
     }
