@@ -45,8 +45,8 @@ To get the exchange rate on, for example, 2023-08-04 for the USD, use the follow
 
 ### As a client, I want to get a foreign exchange amount for a given currency converted to EUR on a particular day
 
-To convert, for example, AUD 200 to EUR on 1999-06-23, first find the rate ID with the following query:  
+To convert, for example, AUD 200 to EUR on 1999-06-23, first find the rate with the following query:  
 > http://localhost:8080/api/v1/rates?currency=AUD&date=1999-06-23
 
-Then, use the `conversion` hyperlink returned by the query above to find a conversion. Assuming the query above returned a rate with ID 123, then to convert, for example, AUD 200 against this rate, the query would look like this: 
+Then, use the `conversion` hyperlink of the rate returned by the query above to find a conversion. Assuming the query above returned a rate with ID 123, then to convert, for example, AUD 200 against this rate, the query would look like this: 
 > http://localhost:8080/api/v1/rates/123/conversion?foreignAmount=200
