@@ -11,7 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class RateModelAssembler implements RepresentationModelAssembler<Rate, EntityModel<Rate>> {
+class RateModelAssembler implements RepresentationModelAssembler<Rate, EntityModel<Rate>> {
 
     @Override
     @NonNull

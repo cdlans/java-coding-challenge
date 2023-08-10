@@ -10,7 +10,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class CurrencyModelAssembler implements RepresentationModelAssembler<Currency, EntityModel<Currency>> {
+class CurrencyModelAssembler implements RepresentationModelAssembler<Currency, EntityModel<Currency>> {
 
     @Override
     @NonNull

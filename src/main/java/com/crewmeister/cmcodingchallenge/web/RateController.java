@@ -48,7 +48,7 @@ public class RateController {
 
     @Operation(summary = "Find all rates, optionally filtered by currency and/or rate")
     @GetMapping
-    public PagedModel<EntityModel<Rate>> findAll(
+    PagedModel<EntityModel<Rate>> findAll(
             @Parameter(description="The three-letter currency code to filter by, for example 'USD'")
             @RequestParam(required = false) String currency,
             @Parameter(description="The date to filter by formatted as yyyy-mm-dd, for example '2021-12-31'")
@@ -63,7 +63,7 @@ public class RateController {
 
     @Operation(summary = "Find a rate by ID")
     @GetMapping(value = "/{id}")
-    public EntityModel<Rate> findOne(
+    EntityModel<Rate> findOne(
             @Parameter(description="The numeric ID of a rate, for example '42'")
             @PathVariable Long id
     ) {
@@ -77,7 +77,7 @@ public class RateController {
 
     @Operation(summary = "Get a conversion to EUR for a foreign currency")
     @GetMapping(value = "/{id}/conversion")
-    public EntityModel<Conversion> conversion(
+    EntityModel<Conversion> conversion(
             @Parameter(description="The numeric ID of a rate, for example '42'")
             @PathVariable Long id,
             @Parameter(description="The amount of the foreign currency to convert, for example '200'")

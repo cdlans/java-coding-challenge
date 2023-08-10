@@ -19,8 +19,10 @@ public class RootController {
 
     @Operation(summary = "Entrypoint to currencies and rates")
     @GetMapping
-    public CollectionModel<String> root() {
-        return CollectionModel.of(Collections.emptyList(),
+    CollectionModel<String> root() {
+        return CollectionModel.of(
+                // return empty resource, we only want to provide the _links to the other resources here
+                Collections.emptyList(),
                 linkTo(methodOn(RootController.class).root()).withSelfRel(),
                 linkTo(methodOn(RateController.class).findAll(null, null, Pageable.unpaged())).withRel("rates"),
                 linkTo(methodOn(CurrencyController.class).findAll(Pageable.unpaged())).withRel("currencies"));

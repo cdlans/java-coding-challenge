@@ -36,7 +36,7 @@ public class CurrencyController {
 
     @Operation(summary = "Find all currencies")
     @GetMapping
-    public PagedModel<EntityModel<Currency>> findAll(@ParameterObject Pageable pageable) {
+    PagedModel<EntityModel<Currency>> findAll(@ParameterObject Pageable pageable) {
         Page<Currency> page = rateRepository.findAllCurrencies(pageable)
                 .map(Currency::new);
 
@@ -45,7 +45,7 @@ public class CurrencyController {
 
     @Operation(summary = "Find a currency by ID")
     @GetMapping(value = "/{id}")
-    public EntityModel<Currency> findOne(
+    EntityModel<Currency> findOne(
             @Parameter(description="The three-letter currency code, for example 'USD'")
             @PathVariable String id
     ) {
