@@ -3,15 +3,15 @@ package com.crewmeister.cmcodingchallenge.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class ConversionDto {
+public class Conversion {
     String currency;
     LocalDate date;
     BigDecimal exchangeRate;
     BigDecimal foreignAmount;
     BigDecimal euroAmount;
 
-    public ConversionDto(String currency, LocalDate date, BigDecimal exchangeRate, BigDecimal foreignAmount,
-                         BigDecimal euroAmount) {
+    public Conversion(String currency, LocalDate date, BigDecimal exchangeRate, BigDecimal foreignAmount,
+                      BigDecimal euroAmount) {
         this.currency = currency;
         this.date = date;
         this.exchangeRate = exchangeRate;

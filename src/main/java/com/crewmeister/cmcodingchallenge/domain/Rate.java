@@ -58,7 +58,7 @@ public class Rate {
         return exchangeRate;
     }
 
-    public ConversionDto convert(BigDecimal foreignAmount) throws ConversionException {
+    public Conversion convert(BigDecimal foreignAmount) throws ConversionException {
         BigDecimal euroAmount;
         try {
             euroAmount = foreignAmount.divide(getExchangeRate(), EURO_AMOUNT_SCALE, RoundingMode.HALF_EVEN);
@@ -68,7 +68,7 @@ public class Rate {
             throw new ConversionException(message, cause);
         }
 
-        return new ConversionDto(getCurrency(), getDate(), getExchangeRate(), foreignAmount, euroAmount);
+        return new Conversion(getCurrency(), getDate(), getExchangeRate(), foreignAmount, euroAmount);
     }
 
     @Override

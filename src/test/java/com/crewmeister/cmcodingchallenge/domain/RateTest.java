@@ -15,7 +15,7 @@ class RateTest {
     void shouldConvertCorrectly() throws ConversionException {
         Rate rate = new Rate("USD", "2023-08-06", new BigDecimal("1.10"));
 
-        ConversionDto conversion = rate.convert(new BigDecimal(110));
+        Conversion conversion = rate.convert(new BigDecimal(110));
 
         assertEquals("USD", conversion.getCurrency());
         assertEquals(LocalDate.of(2023, 8, 6), conversion.getDate());
