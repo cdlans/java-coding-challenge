@@ -36,10 +36,10 @@ public class Rate {
         this.exchangeRate = exchangeRate;
     }
 
-    public Rate(String currency, String date, BigDecimal exchangeRate) {
+    public Rate(String currency, String date, String exchangeRate) {
         this.currency = currency;
         this.date = LocalDate.parse(date);
-        this.exchangeRate = exchangeRate;
+        this.exchangeRate = new BigDecimal(exchangeRate);
     }
 
     public Long getId() {

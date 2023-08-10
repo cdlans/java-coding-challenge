@@ -13,8 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.math.BigDecimal;
-
 import static com.crewmeister.cmcodingchallenge.web.BasePath.BASE_PATH;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
@@ -39,9 +37,9 @@ class RateControllerTest {
 
     @Test
     void getRatesShouldReturnCollectionOfRates() {
-        rateRepository.save(new Rate("EUR", "2023-01-01", new BigDecimal("1.234")));
-        rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
-        rateRepository.save(new Rate("CHF", "2023-01-01", new BigDecimal("42.42")));
+        rateRepository.save(new Rate("EUR", "2023-01-01", "1.234"));
+        rateRepository.save(new Rate("USD", "2023-01-01", "9.876"));
+        rateRepository.save(new Rate("CHF", "2023-01-01", "42.42"));
 
         when()
             .get("/rates")
@@ -55,7 +53,7 @@ class RateControllerTest {
 
     @Test
     void getRateByIdShouldReturnRate() {
-        Rate rate = rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+        Rate rate = rateRepository.save(new Rate("USD", "2023-01-01", "9.876"));
 
         when()
             .get("/rates/{id}", rate.getId())
@@ -67,8 +65,8 @@ class RateControllerTest {
 
     @Test
     void getRatesByCurrencyShouldReturnRate() {
-        rateRepository.save(new Rate("CHF", "2023-01-01", new BigDecimal("1.234")));
-        rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
+        rateRepository.save(new Rate("CHF", "2023-01-01", "1.234"));
+        rateRepository.save(new Rate("USD", "2023-01-01", "9.876"));
 
         when()
             .get("/rates?currency=USD")
@@ -81,8 +79,8 @@ class RateControllerTest {
 
     @Test
     void getRatesByDateShouldReturnRate() {
-        rateRepository.save(new Rate("USD", "2023-01-01", new BigDecimal("9.876")));
-        rateRepository.save(new Rate("USD", "2023-01-02", new BigDecimal("8.765")));
+        rateRepository.save(new Rate("USD", "2023-01-01", "9.876"));
+        rateRepository.save(new Rate("USD", "2023-01-02", "8.765"));
 
         when()
             .get("/rates?date=2023-01-02")
@@ -95,9 +93,9 @@ class RateControllerTest {
 
     @Test
     void getRateByCurrencyAndDateShouldReturnRate() {
-        rateRepository.save(new Rate("CHF", "2023-01-01", new BigDecimal("9.876")));
-        rateRepository.save(new Rate("AUD", "2023-01-02", new BigDecimal("8.765")));
-        rateRepository.save(new Rate("USD", "2023-01-03", new BigDecimal("7.654")));
+        rateRepository.save(new Rate("CHF", "2023-01-01", "9.876"));
+        rateRepository.save(new Rate("AUD", "2023-01-02", "8.765"));
+        rateRepository.save(new Rate("USD", "2023-01-03", "7.654"));
 
         when()
             .get("/rates?currency=USD&date=2023-01-03")
@@ -110,7 +108,7 @@ class RateControllerTest {
 
     @Test
     void getConversionShouldReturnCorrectConversion() {
-        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.10")));
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", "1.10"));
 
         when()
             .get("/rates/{id}/conversion?foreignAmount=110", rate.getId())
@@ -121,7 +119,7 @@ class RateControllerTest {
 
     @Test
     void getConversionShouldReturnDefaultAmount() {
-        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.25")));
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", "1.25"));
 
         when()
             .get("/rates/{id}/conversion", rate.getId())
@@ -132,7 +130,7 @@ class RateControllerTest {
 
     @Test
     void getConversionShouldNotAllowDenialOfServiceAttack() {
-        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("1.25")));
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", "1.25"));
 
         when()
             .get("/rates/{id}/conversion?foreignAmount=5e912345", rate.getId())
@@ -143,7 +141,7 @@ class RateControllerTest {
 
     @Test
     void shouldReturnInternalServerErrorForArithmeticException() {
-        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", new BigDecimal("0")));
+        Rate rate = rateRepository.save(new Rate("USD", "2023-08-06", "0"));
 
         when()
             .get("/rates/{id}/conversion?foreignAmount=200", rate.getId())

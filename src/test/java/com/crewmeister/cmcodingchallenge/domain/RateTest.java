@@ -13,7 +13,7 @@ class RateTest {
 
     @Test
     void shouldConvertCorrectly() throws ConversionException {
-        Rate rate = new Rate("USD", "2023-08-06", new BigDecimal("1.10"));
+        Rate rate = new Rate("USD", "2023-08-06", "1.10");
 
         Conversion conversion = rate.convert(new BigDecimal(110));
 
@@ -26,7 +26,7 @@ class RateTest {
 
     @Test
     void shouldThrowConversionException() {
-        Rate rate = new Rate("USD", "2023-08-06", new BigDecimal("0"));
+        Rate rate = new Rate("USD", "2023-08-06", "0");
         BigDecimal foreignAmount = new BigDecimal(110);
 
         Exception exception = assertThrows(ConversionException.class,
